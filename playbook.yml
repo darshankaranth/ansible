@@ -4,3 +4,10 @@
   - copy:
         src: "master.gitconfig"
         dest: "~/.gitconfig"
+- name: Ensure homebrew packages are installed
+  hosts: localhost
+  tasks:
+  - linuxbrew: name=bat state=latest
+  - linuxbrew:
+         name: jq
+         state: latest
