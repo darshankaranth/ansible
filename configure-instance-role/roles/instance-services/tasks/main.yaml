@@ -1,0 +1,46 @@
+---    
+    - name: "Update Hostnames"
+      become: yes
+      hostname:
+        name: "{{ new_hostname }}"
+    
+    - name: 'Add hostname to /etc/hosts'
+      become: yes
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1[ \t]+localhost'
+        line: '127.0.0.1 localhost {{ new_hostname }}'
+        state: present
+
+    - name: Update apt-get repo and cache
+      become: yes
+      apt:
+        update_cache : yes
+        cache_valid_time: 3600
+		
+		
+    - name: Run configure script
+      become: yes
+      command: bash /opt/configure.sh
+
+   
+    - name: configure instance 
+      become: yes
+      template:
+       src: "{{ role_path }}/files/config.txt"
+       dest: "/opt/config"
+    
+    - name: Pause 1 minute before starting chrony service
+      pause:
+        minutes: 1
+	
+    - name: Start chrony service
+      become: yes
+      service:
+       name: chrony
+       state: started
+       enabled: yes
+
+    - name: Unconditionally reboot the machine with all defaults
+      become: yes
+      reboot:

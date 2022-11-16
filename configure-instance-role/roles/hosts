@@ -1,0 +1,4 @@
+instance1 ansible_host= ansible_user=ubuntu ansible_connection=ssh ansible_ssh_private_key_file=roles/instance-services/files/key.pem ansible_port=22 new_hostname=
+[instance]
+instance1
+
