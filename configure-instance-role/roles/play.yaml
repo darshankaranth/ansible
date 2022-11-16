@@ -1,0 +1,6 @@
+ -
+  name: 'Playbook to configure instance'
+  hosts: instance
+  gather_facts: yes
+  roles:
+    - instance-services
